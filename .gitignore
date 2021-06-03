@@ -114,3 +114,7 @@ kernprof.py
 .idea/
 __MACOSX/
 /outputs/
+
+# training err and log files
+run*.err
+run*.out
