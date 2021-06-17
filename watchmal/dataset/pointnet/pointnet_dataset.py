@@ -44,18 +44,35 @@ class PointNetDataset(H5Dataset):
         if not self.use_orientations:
             data = np.zeros((5, self.n_points_20+self.n_points_3))
         else:
-            hit_orientations_20 = self.geo_orientations_20[self.event_hit_pmts_20[:n_hits_20], :]
-            hit_orientations_3 = self.geo_orientations_3[self.event_hit_pmts_3[:n_hits_3], :]
+            # For some reason the orientation is a (n, 3) matrix when it was
+            # first extracted from the root file, but here it became a (n, 2)
+            # matrix. I vaguly remembered it's converted to zenith and azmith
+            # angles at some point but I can't find the code anywhere. So
+            # probably best not to use this function.....
+            hit_orientations_20 = \
+                self.geo_orientations_20[self.event_hit_pmts_20[:n_hits_20], :]
+            hit_orientations_3 = \
+                self.geo_orientations_3[self.event_hit_pmts_3[:n_hits_3], :]
             data = np.zeros((7, self.n_points_20+self.n_points_3))
             data[3:5, :n_hits_20] = hit_orientations_20.T
-            data[3:5, self.n_points_20:n_hits_3] = hit_orientations_3.T  # 3"
-        
-        # # debugging
-        # print("data.shape = ", data.shape)
-        # print("n_hits_20 = ", n_hits_20)
-        # print("n_hits_3 = ", n_hits_3)
-        # print("n_points_20 = ", self.n_points_20)
-        # print("hit_positions_3[:n_hits_3] = ", hit_positions_3[:n_hits_3])
+            data[3:5, self.n_points_20:(self.n_points_20+n_hits_3)] = \
+                hit_orientations_3.T 
+
+        # The data is store in the following way:
+        #        ----------20in----------|----------3in----------
+        #   x    * * * * * ... 0 0 0 0 0 | * * * * ... 0 0 0 0 0 
+        #   y    * * * * * ... 0 0 0 0 0 | * * * * ... 0 0 0 0 0
+        #   z    * * * * * ... 0 0 0 0 0 | * * * * ... 0 0 0 0 0
+        # (ori 1 * * * * * ... 0 0 0 0 0 | * * * * ... 0 0 0 0 0)
+        # (ori 2 * * * * * ... 0 0 0 0 0 | * * * * ... 0 0 0 0 0)  
+        # charge * * * * * ... 0 0 0 0 0 | * * * * ... 0 0 0 0 0 
+        #  time  * * * * * ... 0 0 0 0 0 | * * * * ... 0 0 0 0 0 
+        #        ---hits---|---no hits---|---hits---|---no hits--
+        #        0         ...      7999 | 8000    ...      15999
+        # where the *'s are the numbers, the bracketed rows are omitable
+        # depending on if you want to use the wcsim outputed PMT orientation or
+        # not (not recommended). Max number of 20in hits is n_points_20, 
+        # currently set at 8000, and max number of 3in hits is n_points_3 = 8000
 
         # 20"
         data[:3, :n_hits_20] = hit_positions_20[:n_hits_20].T
