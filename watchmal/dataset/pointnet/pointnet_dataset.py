@@ -14,7 +14,7 @@ import watchmal.dataset.data_utils as du
 class PointNetDataset(H5Dataset):
 
     def __init__(self, h5file, geometry_file, is_distributed, 
-                 use_orientations=False, n_points_20=4000, n_points_3=4000, 
+                 use_orientations=False, n_points_20=8000, n_points_3=8000, 
                  transforms=None):
         """
         Using the separate geo info format for the hybrid geometry
@@ -40,21 +40,30 @@ class PointNetDataset(H5Dataset):
         hit_positions_3 = self.geo_positions_3[self.event_hit_pmts_3, :]
         n_hits_3 = min(self.n_points_3, self.event_hit_pmts_3.shape[0])
         if not self.use_orientations:
-            data = np.zeros((5, self.n_points_20+self.n_points_3))  # number correct?? FIXME
+            data = np.zeros((5, self.n_points_20+self.n_points_3))
         else:
             hit_orientations_20 = self.geo_orientations_20[self.event_hit_pmts_20[:n_hits_20], :]
             hit_orientations_3 = self.geo_orientations_3[self.event_hit_pmts_3[:n_hits_3], :]
-            data = np.zeros((7, self.n_points_20+self.n_points_3))  # number correct?? FIXME
+            data = np.zeros((7, self.n_points_20+self.n_points_3))
             data[3:5, :n_hits_20] = hit_orientations_20.T
             data[3:5, self.n_points_20:n_hits_3] = hit_orientations_3.T  # 3"
+        
+        # # debugging
+        # print("data.shape = ", data.shape)
+        # print("n_hits_20 = ", n_hits_20)
+        # print("n_hits_3 = ", n_hits_3)
+        # print("n_points_20 = ", self.n_points_20)
+        # print("hit_positions_3[:n_hits_3] = ", hit_positions_3[:n_hits_3])
+
         # 20"
         data[:3, :n_hits_20] = hit_positions_20[:n_hits_20].T
         data[-2, :n_hits_20] = self.event_hit_charges_20[:n_hits_20]
         data[-1, :n_hits_20] = self.event_hit_times_20[:n_hits_20]
         # 3"
-        data[:3, self.n_points_20:n_hits_3] = hit_positions_3[:n_hits_3].T
-        data[-2, self.n_points_20:n_hits_3] = self.event_hit_charges_3[:n_hits_3]
-        data[-1, self.n_points_20:n_hits_3] = self.event_hit_times_3[:n_hits_3]
+        index_3 = self.n_points_20 + n_hits_3
+        data[:3, self.n_points_20:index_3] = hit_positions_3[:n_hits_3].T
+        data[-2, self.n_points_20:index_3] = self.event_hit_charges_3[:n_hits_3]
+        data[-1, self.n_points_20:index_3] = self.event_hit_times_3[:n_hits_3]
 
         data = du.apply_random_transformations(self.transforms, data)
 
