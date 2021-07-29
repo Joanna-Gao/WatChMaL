@@ -114,3 +114,6 @@ kernprof.py
 .idea/
 __MACOSX/
 /outputs/
+
+# log from running jupyter notebook
+log-*
