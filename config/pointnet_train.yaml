@@ -1,5 +1,5 @@
 seed: null
-dump_path: '/scratch/jgao/outputs/'
+dump_path: './outputs/' 
 defaults:
     - data: hk_hybrid
     - data/dataset: hkhybrid_pointnet
