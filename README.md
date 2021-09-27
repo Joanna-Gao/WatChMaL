@@ -269,6 +269,7 @@ process.
 
 The remaining code is structured into `dataset`, `model` and `engine` code.
 
+<<<<<<< HEAD
 - The `dataset` code defines PyTorch `DataSet` classes used by `DataLoader` objects. These `DataSet` classes contain the
 code for loading the data from disk and processing it into the format required by the network. This code also defines
 any data transformations used for e.g. data augmentation.
@@ -276,3 +277,37 @@ any data transformations used for e.g. data augmentation.
 - The `engine` code defines a class that contains all the methods corresponding to the tasks being run. For example,
 this will include the code to configure the data loaders, optimizers, etc., the training loop itself, as well code to
 save and restore states, and so on.
+=======
+data_loaders:
+  train:
+    split_key: train_idxs
+    batch_size: 512
+    num_workers: 4
+    transforms:
+      - horizontal_flip
+      - vertical_flip
+  validation:
+    split_key: val_idxs
+    batch_size: 512
+    num_workers: 4
+```
+Which is then used in the call to the task:
+
+```
+def train(self, train_config):
+    ...
+    # initialize training params
+    epochs          = train_config.epochs
+    report_interval = train_config.report_interval
+    val_interval    = train_config.val_interval
+    num_val_batches = train_config.num_val_batches
+    checkpointing   = train_config.checkpointing
+```
+In our set up, the `data_loaders` and `optimizers` subconfigs of each task (if there are any) are instantiated and configured separately, before performing the tasks.
+
+On cedar to run the training for PointNet you can do something like:
+```
+sbatch --account=rpp-blairt2k --time=3-0:0:0 --gres=gpu:v100l:4 --mem=0 --cpus-per-task=10 /project/rpp-blairt2k/machine_learning/run_watchmal_job.sh -i /project/rpp-blairt2k/machine_learning/containers/baseml_v2.0.6.sif -w /project/rpp-blairt2k/jgao/WatChMaL -c /scratch/jgao/data/HKHybrid/HKHybrid_e-mu-_E0to1000MeV_unif-pos-R3240-y3287cm_4pi-dir_6Mevts.hdf5 -c /scratch/jgao/data/HKHybrid/HKHybrid_e-mu-_E0to1000MeV_unif-pos-R3240-y3287cm_4pi-dir_idxs.npz -c /scratch/jgao/data/HKHybrid/HKHybrid.geo.npz -- python main.py --config-name=pointnet_train +gpu_list=[0,1,2,3] data=hk_hybrid
+```
+Where --gres sets the number of gpus, --mem=0 asks the system to allocate all the available memory on a node.
+>>>>>>> 36b26f0 (Copied three analysis files from nick for plotting performance vs. E, dir, loc...)
