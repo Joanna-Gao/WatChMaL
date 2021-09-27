@@ -196,3 +196,9 @@ def train(self, train_config):
     checkpointing   = train_config.checkpointing
 ```
 In our set up, the `data_loaders` and `optimizers` subconfigs of each task (if there are any) are instantiated and configured separately, before performing the tasks.
+
+On cedar to run the training for PointNet you can do something like:
+```
+sbatch --account=rpp-blairt2k --time=3-0:0:0 --gres=gpu:v100l:4 --mem=0 --cpus-per-task=10 /project/rpp-blairt2k/machine_learning/run_watchmal_job.sh -i /project/rpp-blairt2k/machine_learning/containers/baseml_v2.0.6.sif -w /project/rpp-blairt2k/jgao/WatChMaL -c /scratch/jgao/data/HKHybrid/HKHybrid_e-mu-_E0to1000MeV_unif-pos-R3240-y3287cm_4pi-dir_6Mevts.hdf5 -c /scratch/jgao/data/HKHybrid/HKHybrid_e-mu-_E0to1000MeV_unif-pos-R3240-y3287cm_4pi-dir_idxs.npz -c /scratch/jgao/data/HKHybrid/HKHybrid.geo.npz -- python main.py --config-name=pointnet_train +gpu_list=[0,1,2,3] data=hk_hybrid
+```
+Where --gres sets the number of gpus, --mem=0 asks the system to allocate all the available memory on a node.
