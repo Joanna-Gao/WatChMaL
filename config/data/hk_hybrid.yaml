@@ -1,4 +1,4 @@
 # @package _group_
-split_path: /scratch/jgao/data/HKHybrid/HKHybrid_e-mu-_E0to1000MeV_unif-pos-R3240-y3287cm_4pi-dir_idxs.npz
+split_path: /scratch/jgao/data/HKHybrid/HKHybrid_e-mu-pi0_E0to1000MeV_unif-pos-R3240-y3287cm_4pi-dir_9Mevts_idxs.npz
 dataset:
-  h5file: /scratch/jgao/data/HKHybrid/HKHybrid_e-mu-_E0to1000MeV_unif-pos-R3240-y3287cm_4pi-dir_6Mevts.hdf5
+  h5file: /scratch/jgao/data/HKHybrid/HKHybrid_e-mu-pi0_E0to1000MeV_unif-pos-R3240-y3287cm_4pi-dir_9Mevts.hdf5
