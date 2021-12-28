@@ -27,7 +27,6 @@ def towall(position, angle, tank_half_height=300, tank_radius=400, tank_axis=1):
     a = np.linalg.norm(dir_trans, axis=-1)**2
     b = np.sum(pos_trans*dir_trans, axis=-1)
     c = np.linalg.norm(pos_trans, axis=-1) ** 2 - tank_radius ** 2
-    print(b**2-a*c)
     towall_barrel = (-b + np.sqrt(b**2-a*c)) / (a)
     towall_endcap = tank_half_height / abs(dir_along) - pos_along / dir_along
     return np.minimum(towall_barrel, towall_endcap)
