@@ -38,8 +38,6 @@ class H5CommonDataset(Dataset, ABC):
     hit_pmt 	  (n_hits,) 	  int32 	  PMT ID of the digitized hit
     hit_time 	  (n_hits,) 	  float32 	Time of the digitized hit
 
-    Note: event_hits_index, hit_pmt and hit_time have to be separate for 20" 
-          and 3" PMTs
     """
     def __init__(self, h5_path, is_distributed):
         """
@@ -71,32 +69,20 @@ class H5CommonDataset(Dataset, ABC):
             self.veto2 = np.array(self.h5_file["veto2"])
         self.event_hits_index_20 = np.append(self.h5_file["event_hits_index_20"],\
             self.h5_file["hit_pmt_20"].shape[0]).astype(np.int64)  # why append this? FIXME!
-        self.event_hits_index_3 = np.append(self.h5_file["event_hits_index_3"],\
-            self.h5_file["hit_pmt_3"].shape[0]).astype(np.int64)
 
         self.hdf5_hit_pmt_20  = self.h5_file["hit_pmt_20"]
         self.hdf5_hit_time_20 = self.h5_file["hit_time_20"]
-
-        self.hdf5_hit_pmt_3  = self.h5_file["hit_pmt_3"]
-        self.hdf5_hit_time_3 = self.h5_file["hit_time_3"]
 
         self.hit_pmt_20 = np.memmap(self.h5_path, mode="r", 
                                     shape=self.hdf5_hit_pmt_20.shape,
                                     offset=self.hdf5_hit_pmt_20.id.get_offset(),
                                     dtype=self.hdf5_hit_pmt_20.dtype)
-        self.hit_pmt_3 = np.memmap(self.h5_path, mode="r", 
-                                   shape=self.hdf5_hit_pmt_3.shape,
-                                   offset=self.hdf5_hit_pmt_3.id.get_offset(),
-                                   dtype=self.hdf5_hit_pmt_3.dtype)
 
         self.time_20 = np.memmap(self.h5_path, mode="r", 
                                  shape=self.hdf5_hit_time_20.shape,
                                  offset=self.hdf5_hit_time_20.id.get_offset(),
                                  dtype=self.hdf5_hit_time_20.dtype)
-        self.time_3 = np.memmap(self.h5_path, mode="r", 
-                                shape=self.hdf5_hit_time_3.shape,
-                                offset=self.hdf5_hit_time_3.id.get_offset(),
-                                dtype=self.hdf5_hit_time_3.dtype)
+
         self.load_hits()
 
         # Set attribute so that method won't be invoked again
@@ -143,11 +129,6 @@ class H5Dataset(H5CommonDataset, ABC):
                                        shape=self.hdf5_hit_charge_20.shape,
                                        offset=self.hdf5_hit_charge_20.id.get_offset(),
                                        dtype=self.hdf5_hit_charge_20.dtype)
-        self.hdf5_hit_charge_3 = self.h5_file["hit_charge_3"]
-        self.hit_charge_3 = np.memmap(self.h5_path, mode="r",
-                                      shape=self.hdf5_hit_charge_3.shape,
-                                      offset=self.hdf5_hit_charge_3.id.get_offset(),
-                                      dtype=self.hdf5_hit_charge_3.dtype)
         
     def __getitem__(self, item):
         data_dict = super().__getitem__(item)
@@ -158,13 +139,6 @@ class H5Dataset(H5CommonDataset, ABC):
         self.event_hit_pmts_20 = self.hit_pmt_20[start_20:stop_20].astype(np.int16)
         self.event_hit_charges_20 = self.hit_charge_20[start_20:stop_20]
         self.event_hit_times_20 = self.time_20[start_20:stop_20]
-
-        start_3 = self.event_hits_index_3[item]
-        stop_3 = self.event_hits_index_3[item + 1]
-
-        self.event_hit_pmts_3 = self.hit_pmt_3[start_3:stop_3].astype(np.int16)
-        self.event_hit_charges_3 = self.hit_charge_3[start_3:stop_3]
-        self.event_hit_times_3 = self.time_3[start_3:stop_3]
 
         return data_dict
 
