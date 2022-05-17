@@ -7,9 +7,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 import math
+import sys
 
 from sklearn.metrics import auc
 
+sys.path.append("../..")
 from WatChMaL.analysis.plot_utils import compute_roc, plot_roc, disp_learn_hist
 
 def multi_disp_learn_hist(locations, losslim=None, show=True, titles=None, best_only=False, leg_font=10, title_font=10, xmax=None):
@@ -108,3 +110,5 @@ def multi_plot_roc(fprs, tprs, thrs, true_label_name, false_label_name, fig_list
         show=False)
 
     return figs
+
+
