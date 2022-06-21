@@ -51,7 +51,7 @@ class PointNetDataset(H5Dataset):
                 self.geo_orientations_20[self.event_hit_pmts_20[:n_hits_20], :]
             hit_orientations_3 = \
                 self.geo_orientations_3[self.event_hit_pmts_3[:n_hits_3], :]
-            data = np.zeros((7, self.n_points_20+self.n_points_3))
+            data = np.zeros((8, self.n_points_20+self.n_points_3))
             data[3:5, :n_hits_20] = hit_orientations_20.T
             data[3:5, self.n_points_20:(self.n_points_20+n_hits_3)] = \
                 hit_orientations_3.T 
@@ -64,7 +64,8 @@ class PointNetDataset(H5Dataset):
         # (ori 1 * * * * * ... 0 0 0 0 0 | * * * * ... 0 0 0 0 0)
         # (ori 2 * * * * * ... 0 0 0 0 0 | * * * * ... 0 0 0 0 0)  
         # charge * * * * * ... 0 0 0 0 0 | * * * * ... 0 0 0 0 0 
-        #  time  * * * * * ... 0 0 0 0 0 | * * * * ... 0 0 0 0 0 
+        #  time  * * * * * ... 0 0 0 0 0 | * * * * ... 0 0 0 0 0
+        # label  0 0 0 0 0 ... 0 0 0 0 0 | 1 1 1 1 ... 1 1 1 1 1
         #        ---hits---|---no hits---|---hits---|---no hits--
         #        0         ...      7999 | 8000    ...      15999
         # where the *'s are the numbers, the bracketed rows are omitable
@@ -74,13 +75,15 @@ class PointNetDataset(H5Dataset):
 
         # 20"
         data[:3, :n_hits_20] = hit_positions_20[:n_hits_20].T
-        data[-2, :n_hits_20] = self.event_hit_charges_20[:n_hits_20]
-        data[-1, :n_hits_20] = self.event_hit_times_20[:n_hits_20]
+        data[-3, :n_hits_20] = self.event_hit_charges_20[:n_hits_20]
+        data[-2, :n_hits_20] = self.event_hit_times_20[:n_hits_20]
+        data[-1, :n_hits_20] = [0] * n_hits_20
         # 3"
         index_3 = self.n_points_20 + n_hits_3
         data[:3, self.n_points_20:index_3] = hit_positions_3[:n_hits_3].T
-        data[-2, self.n_points_20:index_3] = self.event_hit_charges_3[:n_hits_3]
-        data[-1, self.n_points_20:index_3] = self.event_hit_times_3[:n_hits_3]
+        data[-3, self.n_points_20:index_3] = self.event_hit_charges_3[:n_hits_3]
+        data[-2, self.n_points_20:index_3] = self.event_hit_times_3[:n_hits_3]
+        data[-1, self.n_points_20:index_3] = [1] * n_hits_3
 
         data = du.apply_random_transformations(self.transforms, data)
 

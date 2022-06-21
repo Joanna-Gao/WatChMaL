@@ -410,8 +410,10 @@ def plot_roc(fpr, tpr, thr, true_label_name, false_label_name, fig_list=None, xl
 
     if 0 in fig_list: 
         ax0.tick_params(axis="both", labelsize=20)
+        ax1.grid(b=True, which='major', color='gray', linestyle='-')
+        ax1.grid(b=True, which='minor', color='gray', linestyle='--')
         ax0.plot(fpr, tpr,
-                    label=plot_label if plot_label + ', AUC={:.3f}'.format(roc_AUC)  is not None else r'{} VS {} ROC, AUC={:.3f}'.format(true_label_name, false_label_name, roc_AUC),
+                    label=plot_label + ', AUC={:.3f}'.format(roc_AUC)  if plot_label is not None else r'{} VS {} ROC, AUC={:.3f}'.format(true_label_name, false_label_name, roc_AUC),
                     linestyle=linestyle  if linestyle is not None else None,
                     color=linecolor if linecolor is not None else None)
         ax0.set_xlabel('FPR', fontsize=20)
