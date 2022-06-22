@@ -2,6 +2,9 @@
 Class implementing a mPMT dataset for pointnet in h5 format
 """
 
+# torch imports
+import torch
+
 # generic imports
 import numpy as np
 
