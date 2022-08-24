@@ -17,7 +17,7 @@ import watchmal.dataset.data_utils as du
 class PointNetDataset(H5Dataset):
 
     def __init__(self, h5file, geometry_file, is_distributed, 
-                 use_orientations=False, n_points_20=8000, n_points_3=8000, 
+                 use_orientations=False, n_points_20=5000, n_points_3=5000, 
                  transforms=None):
         """
         Using the separate geo info format for the hybrid geometry
@@ -70,11 +70,11 @@ class PointNetDataset(H5Dataset):
         #  time  * * * * * ... 0 0 0 0 0 | * * * * ... 0 0 0 0 0
         # label  0 0 0 0 0 ... 0 0 0 0 0 | 1 1 1 1 ... 1 1 1 1 1
         #        ---hits---|---no hits---|---hits---|---no hits--
-        #        0         ...      7999 | 8000    ...      15999
+        #        0         ...      4999 | 5000    ...      9999
         # where the *'s are the numbers, the bracketed rows are omitable
         # depending on if you want to use the wcsim outputed PMT orientation or
         # not (not recommended). Max number of 20in hits is n_points_20, 
-        # currently set at 8000, and max number of 3in hits is n_points_3 = 8000
+        # currently set at 5000, and max number of 3in hits is n_points_3 = 8000
 
         # 20"
         data[:3, :n_hits_20] = hit_positions_20[:n_hits_20].T

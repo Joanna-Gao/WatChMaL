@@ -2,5 +2,5 @@
 _target_: watchmal.dataset.pointnet.pointnet_dataset.PointNetDataset
 geometry_file: /lustre07/scratch/jgao/data/HKHybrid/HKHybrid.geo.npz
 use_orientations: False
-n_points_20: 8000
-n_points_3: 8000
+n_points_20: 5000
+n_points_3: 5000
