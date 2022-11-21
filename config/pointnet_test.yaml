@@ -1,0 +1,12 @@
+seed: null
+dump_path: './outputs/' 
+defaults:
+    - data: hk_hybrid
+    - data/dataset: hkhybrid_pointnet
+    - model: classifier
+    - model/feature_extractor: pointnet
+    - model/classification_network: pointnet_fc
+    - engine: classifier
+    - tasks/restore_state: restore_state
+    - tasks/evaluate: test
+    - sampler@tasks.evaluate.data_loaders.test.sampler: subset_sequential

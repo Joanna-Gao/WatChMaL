@@ -152,7 +152,7 @@ def plot_multi_var_binned_performance(
 
     legend_without_duplicate_labels(axes)
     return axes
-    
+
 
 def plot_to_wall_binned_in_energy(to_wall_features, **kwargs):
     return plot_multi_var_binned_performance(binning_bin_label='Energy', binning_bin_units='$MeV$', plot_bin_label='To Wall', plot_bin_units='cm', plot_binning_features=to_wall_features, **kwargs)
@@ -358,7 +358,7 @@ def plot_pion_multi_var_binned_performance(
                                                    fpr_fixed_point, title_note, metric, yrange, xrange, axes, desired_labels)
 
     legend_without_duplicate_labels(axes)
-    
+
 # ========================================================================
 # Define helper functions
 
@@ -386,7 +386,7 @@ def plot_separate_legend(ax):
     handles, labels = ax.get_legend_handles_labels()
 
     new_ax.legend(handles, labels)
-    
+
 
 def plot_tank_corners(ax):
     handles, labels = ax.get_legend_handles_labels()

@@ -1,2 +1,2 @@
 # @package _group_
-weight_file: '/home/jtindall/short_tank/short_tank_run_1/outputs/ClassifierBEST.pth'
+weight_file: "/project/rpp-blairt2k/jgao/WatChMaL/outputs/2021-12-14/15-12-03/outputs/DistributedDataParallelBEST.pth"
