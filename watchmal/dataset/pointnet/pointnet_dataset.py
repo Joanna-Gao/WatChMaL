@@ -43,7 +43,7 @@ class PointNetDataset(H5Dataset):
         hit_positions_3 = self.geo_positions_3[self.event_hit_pmts_3, :]
         n_hits_3 = min(self.n_points_3, self.event_hit_pmts_3.shape[0])
         if not self.use_orientations:
-            data = np.zeros((5, self.n_points_20+self.n_points_3))
+            data = np.zeros((6, self.n_points_20+self.n_points_3))
         else:
             # For some reason the orientation is a (n, 3) matrix when it was
             # first extracted from the root file, but here it became a (n, 2)
@@ -74,19 +74,19 @@ class PointNetDataset(H5Dataset):
         # where the *'s are the numbers, the bracketed rows are omitable
         # depending on if you want to use the wcsim outputed PMT orientation or
         # not (not recommended). Max number of 20in hits is n_points_20, 
-        # currently set at 5000, and max number of 3in hits is n_points_3 = 8000
+        # currently set at 5000, and max number of 3in hits is n_points_3 = 5000
 
         # 20"
         data[:3, :n_hits_20] = hit_positions_20[:n_hits_20].T
         data[-3, :n_hits_20] = self.event_hit_charges_20[:n_hits_20]
         data[-2, :n_hits_20] = self.event_hit_times_20[:n_hits_20]
-        data[-1, :n_hits_20] = [0] * n_hits_20
+        data[-1, :n_hits_20] = [1] * n_hits_20
         # 3"
         index_3 = self.n_points_20 + n_hits_3
         data[:3, self.n_points_20:index_3] = hit_positions_3[:n_hits_3].T
         data[-3, self.n_points_20:index_3] = self.event_hit_charges_3[:n_hits_3]
         data[-2, self.n_points_20:index_3] = self.event_hit_times_3[:n_hits_3]
-        data[-1, self.n_points_20:index_3] = [1] * n_hits_3
+        data[-1, self.n_points_20:index_3] = [2] * n_hits_3
 
         data = du.apply_random_transformations(self.transforms, data)
 
