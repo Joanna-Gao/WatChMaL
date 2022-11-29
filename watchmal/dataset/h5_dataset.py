@@ -163,8 +163,7 @@ class H5TrueDataset(H5CommonDataset, ABC):
     hit_parent 	(n_hits,) 	float32 	Parent track ID of the true hit, as defined by 
                                       WCSim's true hit parent. -1 is used for dark noise.
 
-    Note: the modification for hybrid HK geometry is not complete. Caution is
-          needed.
+    Note: a few variables are separated for 20" and 3" PMTs
     """
     def __init__(self, h5_path, transforms=None, digitize_hits=True):
         H5CommonDataset.__init__(self, h5_path, transforms)

@@ -104,6 +104,8 @@ ENV/
 input/
 saved/
 datasets/
+*.out
+*.err
 
 # testing
 testing/
