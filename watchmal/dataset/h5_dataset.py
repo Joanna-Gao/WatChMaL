@@ -176,18 +176,24 @@ class H5TrueDataset(H5CommonDataset, ABC):
                                         defined by WCSim's true hit parent. 
                                         -1 is used for dark noise.
 
-    Note: the modification for hybrid HK geometry is not complete. Caution is
-          needed.
+    Note: modified for hybrid HK geometry.
     """
     def __init__(self, h5_path, transforms=None, digitize_hits=True):
         H5CommonDataset.__init__(self, h5_path, transforms)
         self.digitize_hits = digitize_hits
 
     def load_hits(self):
-        self.all_hit_parent = self.h5_file["hit_parent"]
-        self.hit_parent = np.memmap( self.h5_path, mode="r", shape=self.all_hit_parent.shape,
-                              offset=self.all_hit_parent.id.get_offset(),
-                              dtype=self.all_hit_parent.dtype)
+        self.all_hit_parent_20 = self.h5_file["hit_parent_20"]
+        self.hit_parent_20 = np.memmap(self.h5_path, mode="r",
+                                       shape=self.all_hit_parent_20.shape,
+                                       offset=self.all_hit_parent_20.id.get_offset(),
+                                       dtype=self.all_hit_parent_20.dtype)
+
+        self.all_hit_parent_3 = self.h5_file["hit_parent_3"]
+        self.hit_parent_3 = np.memmap(self.h5_path, mode="r",
+                                       shape=self.all_hit_parent_3.shape,
+                                       offset=self.all_hit_parent_3.id.get_offset(),
+                                       dtype=self.all_hit_parent_3.dtype)
 
     def digitize(self, truepmts, truetimes, trueparents):
         """
@@ -209,15 +215,26 @@ class H5TrueDataset(H5CommonDataset, ABC):
         start_20 = self.event_hits_index_20[item]
         stop_20 = self.event_hits_index_20[item + 1]
 
-        true_pmts    = self.hit_pmt_20[start_20:stop_20].astype(np.int16)
-        true_times   = self.time_20[start_20:stop_20]
-        true_parents = self.hit_parent[start_20:stop_20]
+        true_pmts_20    = self.hit_pmt_20[start_20:stop_20].astype(np.int16)
+        true_times_20   = self.time_20[start_20:stop_20]
+        true_parents_20 = self.hit_parent_20[start_20:stop_20]
+
+        start_3 = self.event_hits_index_3[item]
+        stop_3 = self.event_hits_index_3[item + 1]
+        true_pmts_3    = self.hit_pmt_3[start_3:stop_3].astype(np.int16)
+        true_times_3   = self.time_3[start_3:stop_3]
+        true_parents_3 = self.hit_parent_3[start_3:stop_3]
 
         if self.digitize_hits:
-            self.event_hit_pmts_20, self.event_hit_times_20, self.event_hit_charges_20 = self.digitize(true_pmts, true_times, true_parents)
+            self.event_hit_pmts_20, self.event_hit_times_20, self.event_hit_charges_20 = self.digitize(true_pmts_20, true_times_20, true_parents_20)
+            self.event_hit_pmts_3, self.event_hit_times_3, self.event_hit_charges_3 = self.digitize(true_pmts_3, true_times_3, true_parents_3)
         else:
-            self.event_hit_pmts_20 = true_pmts
-            self.event_hit_times_20 = true_times
-            self.event_hit_parents = true_parents
+            self.event_hit_pmts_20 = true_pmts_20
+            self.event_hit_times_20 = true_times_20
+            self.event_hit_parents_20 = true_parents_20
+
+            self.event_hit_pmts_3 = true_pmts_3
+            self.event_hit_times_3 = true_times_3
+            self.event_hit_parents_3 = true_parents_3
 
         return data_dict
