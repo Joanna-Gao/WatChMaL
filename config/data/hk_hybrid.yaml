@@ -1,0 +1,4 @@
+# @package _group_
+split_path: /project/rpp-blairt2k/machine_learning/data/HKHybrid/numpy/only_e-pi0_idxs_w_mPMT.npz
+dataset:
+  h5file: /project/rpp-blairt2k/machine_learning/data/HKHybrid/numpy/e-mu-pi0.hdf5
