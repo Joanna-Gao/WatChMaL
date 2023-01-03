@@ -31,6 +31,9 @@ def main(config):
     """
     logger.info(f"Running with the following config:\n{OmegaConf.to_yaml(config)}")
 
+    # Set debug env flag
+    os.environ['HYDRA_FULL_ERROR'] = '1'
+
     ngpus = len(config.gpu_list)
     is_distributed = ngpus > 1
     

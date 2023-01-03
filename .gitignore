@@ -121,3 +121,4 @@ log-*
 # ML training logs
 run_watchmal_job*.err
 run_watchmal_job*.out
+*.out

@@ -17,7 +17,7 @@ import watchmal.dataset.data_utils as du
 class PointNetDataset(H5Dataset):
 
     def __init__(self, h5file, geometry_file, is_distributed, 
-                 use_orientations=False, n_points_20=5000, n_points_3=5000, 
+                 use_orientations=False, n_points_20=4000, n_points_3=4000, 
                  transforms=None):
         """
         Using the separate geo info format for the hybrid geometry
