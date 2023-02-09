@@ -27,7 +27,7 @@ class PointNetDataset(H5Dataset):
         self.n_points_20 = n_points_20
         self.n_points_3 = n_points_3
         self.transforms = du.get_transformations(transformations, transforms)
-        self.channels = 4  #FIXME!
+        self.channels = 5  #x,y,z,q,pmt flag
         if use_orientations:
             self.channels += 3
         if use_times:
@@ -51,7 +51,8 @@ class PointNetDataset(H5Dataset):
         # (ori 1 * * * * * ... 0 0 0 0 0 | * * * * ... 0 0 0 0 0)
         # (ori 2 * * * * * ... 0 0 0 0 0 | * * * * ... 0 0 0 0 0)  
         #  time  * * * * * ... 0 0 0 0 0 | * * * * ... 0 0 0 0 0 
-        # charge * * * * * ... 0 0 0 0 0 | * * * * ... 0 0 0 0 0 
+        # charge * * * * * ... 0 0 0 0 0 | * * * * ... 0 0 0 0 0
+        # label  1 1 1 1 1 ... 0 0 0 0 0 | 2 2 2 2 ... 0 0 0 0 0
         #        ---hits---|---no hits---|---hits---|---no hits--
         #        0         ...      3999 | 4000    ...      7999
         # where the *'s are the numbers, the bracketed rows are omitable
@@ -61,10 +62,12 @@ class PointNetDataset(H5Dataset):
 
         # 20"
         data[:3, :n_hits_20] = hit_positions_20[:n_hits_20].T
+        data[-1, :n_hits_20] = [1] * n_hits_20
 
         # 3"
         index_3 = self.n_points_20 + n_hits_3
         data[:3, self.n_points_20:index_3] = hit_positions_3[:n_hits_3].T
+        data[-1, self.n_points_20:index_3] = [2] * n_hits_3
 
         if self.use_orientations:
             hit_orientations_20 = self.geo_orientations_20[self.event_hit_pmts_20[:n_hits_20], :]
@@ -72,11 +75,11 @@ class PointNetDataset(H5Dataset):
             hit_orientations_3 = self.geo_orientations_3[self.event_hit_pmts_3[:n_hits_3], :]
             data[3:6, n_hits_20:index_3] = hit_orientations_3.T
         if self.use_times:
-            data[-2, :n_hits_20] = self.event_hit_times_20[:n_hits_20]
-            data[-2, self.n_points_20:index_3] = self.event_hit_times_3[:n_hits_3]
+            data[-3, :n_hits_20] = self.event_hit_times_20[:n_hits_20]
+            data[-3, self.n_points_20:index_3] = self.event_hit_times_3[:n_hits_3]
 
-        data[-1, :n_hits_20] = self.event_hit_charges_20[:n_hits_20]
-        data[-1, self.n_points_20:index_3] = self.event_hit_charges_3[:n_hits_3]
+        data[-2, :n_hits_20] = self.event_hit_charges_20[:n_hits_20]
+        data[-2, self.n_points_20:index_3] = self.event_hit_charges_3[:n_hits_3]
 
         data = du.apply_random_transformations(self.transforms, data)
 

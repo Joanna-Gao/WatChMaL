@@ -1,4 +1,4 @@
 # @package _group_
-split_path: /project/rpp-blairt2k/machine_learning/data/HKHybrid/numpy/only_e-pi0_idxs_w_mPMT.npz
+split_path: /lustre07/scratch/jgao/data/HKHybrid/e-_w_mPMT_no_fv_cut_idxs.npz
 dataset:
-  h5file: /project/rpp-blairt2k/machine_learning/data/HKHybrid/numpy/e-mu-pi0.hdf5
+  h5file: /lustre07/scratch/jgao/data/HKHybrid/HKHybrid_e-gamma_E0to1000MeV_unif-pos-R3240-y3287cm_4pi-dir_6Mevts_w_mPMT.hdf5

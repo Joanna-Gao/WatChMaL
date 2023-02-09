@@ -55,6 +55,16 @@ class RegressionEngine(BaseEngine):
             # Move the data and the labels to the GPU (if using CPU this has no effect)
             data = self.data.to(self.device)
             target = self.target.to(self.device)
+
+            # print(f"data.shape={data.shape}, self.model={self.model(data)}, target.shape={target.shape}")
+            # print("GAO")
+            # print(self.model(data))
+            # print("GAOGAO")
+            # print(data)
+            # print("GAOGAOGAO")
+            # print(target)
+            # print("GAOGAOGAOGAO")
+            
             model_out = self.model(data).reshape(target.shape)
             scaled_target = self.scale_values(target)
             scaled_model_out = self.scale_values(model_out)
@@ -186,6 +196,7 @@ class RegressionEngine(BaseEngine):
                 val_iter = iter(self.data_loaders["validation"])
                 val_data = next(val_iter)
 
+            # print(val_data)
             # extract the event data from the input data tuple
             self.data = val_data['data']
             self.target = val_data[self.output_type]
