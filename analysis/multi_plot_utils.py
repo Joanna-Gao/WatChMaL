@@ -110,5 +110,3 @@ def multi_plot_roc(fprs, tprs, thrs, true_label_name, false_label_name, fig_list
         show=False)
 
     return figs
-
-

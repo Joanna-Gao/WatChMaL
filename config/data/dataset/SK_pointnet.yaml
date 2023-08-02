@@ -1,6 +1,6 @@
 # @package _group_
 _target_: watchmal.dataset.pointnet.pointnet_dataset.PointNetDataset
-geometry_file: /lustre07/scratch/jgao/data/HKHybrid/HKHybrid.geo.npz
+geometry_file: /home/ayankele/projects/rpp-blairt2k/ayankele/SK_geo.npz
 use_orientations: False
-n_points_20: 5000
-n_points_3: 5000
+use_times: True
+n_points: 400

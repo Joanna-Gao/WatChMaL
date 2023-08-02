@@ -57,11 +57,10 @@ class H5CommonDataset(Dataset, ABC):
             self.initialize()
 
     def initialize(self):
-        self.file_descriptor = open(self.h5_path, 'rb')
-        self.h5_file = h5py.File(self.file_descriptor, "r")
+        self.h5_file = h5py.File(self.h5_path, "r")
 
-        self.event_ids  = np.array(self.h5_file["event_ids"])
-        self.root_files = np.array(self.h5_file["root_files"])
+#        self.event_ids  = np.array(self.h5_file["event_ids"])
+#        self.root_files = np.array(self.h5_file["root_files"])
         self.labels     = np.array(self.h5_file["labels"])
         self.positions  = np.array(self.h5_file["positions"])
         self.angles     = np.array(self.h5_file["angles"])
@@ -115,15 +114,14 @@ class H5CommonDataset(Dataset, ABC):
             self.initialize()
 
         data_dict = {
-            "labels": self.labels[item],
-            "energies": self.energies[item],
-            "angles": self.angles[item],
-            "positions": self.positions[item],
-            "event_ids": self.event_ids[item],
-            "root_files": self.root_files[item],
+            "labels": self.labels[item].astype(np.int64),
+#            "energies": self.energies[item],
+#            "angles": self.angles[item],
+#            "positions": self.positions[item],
+#            "event_ids": self.event_ids[item],
+#            "root_files": self.root_files[item],
             "indices": item
         }
-
         return data_dict
 
 
