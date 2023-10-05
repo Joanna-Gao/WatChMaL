@@ -62,32 +62,32 @@ class H5CommonDataset(Dataset, ABC):
 #            self.veto2 = np.array(self.h5_file["veto2"])
         self.event_hits_index_20 = np.append(self.h5_file["event_hits_index_20"],
                                              self.h5_file["hit_pmt_20"].shape[0]).astype(np.int64)
-        self.event_hits_index_3 = np.append(self.h5_file["event_hits_index_3"],
-                                            self.h5_file["hit_pmt_3"].shape[0]).astype(np.int64)
+        # self.event_hits_index_3 = np.append(self.h5_file["event_hits_index_3"],
+        #                                     self.h5_file["hit_pmt_3"].shape[0]).astype(np.int64)
 
         self.hdf5_hit_pmt_20  = self.h5_file["hit_pmt_20"]
-        self.hdf5_hit_pmt_3  = self.h5_file["hit_pmt_3"]
+        # self.hdf5_hit_pmt_3  = self.h5_file["hit_pmt_3"]
 
         self.hdf5_hit_time_20 = self.h5_file["hit_time_20"]
-        self.hdf5_hit_time_3 = self.h5_file["hit_time_3"]
+        # self.hdf5_hit_time_3 = self.h5_file["hit_time_3"]
 
         self.hit_pmt_20 = np.memmap(self.h5_path, mode="r", 
                                     shape=self.hdf5_hit_pmt_20.shape,
                                     offset=self.hdf5_hit_pmt_20.id.get_offset(),
                                     dtype=self.hdf5_hit_pmt_20.dtype)
-        self.hit_pmt_3  = np.memmap(self.h5_path, mode="r", 
-                                    shape=self.hdf5_hit_pmt_3.shape,
-                                    offset=self.hdf5_hit_pmt_3.id.get_offset(),
-                                    dtype=self.hdf5_hit_pmt_3.dtype)
+        # self.hit_pmt_3  = np.memmap(self.h5_path, mode="r", 
+        #                             shape=self.hdf5_hit_pmt_3.shape,
+        #                             offset=self.hdf5_hit_pmt_3.id.get_offset(),
+        #                             dtype=self.hdf5_hit_pmt_3.dtype)
 
         self.time_20 = np.memmap(self.h5_path, mode="r",
                                  shape=self.hdf5_hit_time_20.shape,
                                  offset=self.hdf5_hit_time_20.id.get_offset(),
                                  dtype=self.hdf5_hit_time_20.dtype)
-        self.time_3  = np.memmap(self.h5_path, mode="r",
-                                 shape=self.hdf5_hit_time_3.shape,
-                                 offset=self.hdf5_hit_time_3.id.get_offset(),
-                                 dtype=self.hdf5_hit_time_3.dtype)
+        # self.time_3  = np.memmap(self.h5_path, mode="r",
+        #                          shape=self.hdf5_hit_time_3.shape,
+        #                          offset=self.hdf5_hit_time_3.id.get_offset(),
+        #                          dtype=self.hdf5_hit_time_3.dtype)
         self.load_hits()
 
         # Set attribute so that method won't be invoked again
@@ -133,11 +133,11 @@ class H5Dataset(H5CommonDataset, ABC):
                                        offset=self.hdf5_hit_charge_20.id.get_offset(),
                                        dtype=self.hdf5_hit_charge_20.dtype)
         
-        self.hdf5_hit_charge_3 = self.h5_file["hit_charge_3"]
-        self.hit_charge_3 = np.memmap(self.h5_path, mode="r",
-                                       shape=self.hdf5_hit_charge_3.shape,
-                                       offset=self.hdf5_hit_charge_3.id.get_offset(),
-                                       dtype=self.hdf5_hit_charge_3.dtype)
+        # self.hdf5_hit_charge_3 = self.h5_file["hit_charge_3"]
+        # self.hit_charge_3 = np.memmap(self.h5_path, mode="r",
+        #                                shape=self.hdf5_hit_charge_3.shape,
+        #                                offset=self.hdf5_hit_charge_3.id.get_offset(),
+        #                                dtype=self.hdf5_hit_charge_3.dtype)
     def __getitem__(self, item):
         data_dict = super().__getitem__(item)
 
@@ -148,12 +148,12 @@ class H5Dataset(H5CommonDataset, ABC):
         self.event_hit_charges_20 = self.hit_charge_20[start_20:stop_20]
         self.event_hit_times_20 = self.time_20[start_20:stop_20]
 
-        start_3 = self.event_hits_index_3[item]
-        stop_3 = self.event_hits_index_3[item + 1]
+        # start_3 = self.event_hits_index_3[item]
+        # stop_3 = self.event_hits_index_3[item + 1]
 
-        self.event_hit_pmts_3 = self.hit_pmt_3[start_3:stop_3]
-        self.event_hit_charges_3 = self.hit_charge_3[start_3:stop_3]
-        self.event_hit_times_3 = self.time_3[start_3:stop_3]
+        # self.event_hit_pmts_3 = self.hit_pmt_3[start_3:stop_3]
+        # self.event_hit_charges_3 = self.hit_charge_3[start_3:stop_3]
+        # self.event_hit_times_3 = self.time_3[start_3:stop_3]
 
         return data_dict
 
@@ -176,11 +176,11 @@ class H5TrueDataset(H5CommonDataset, ABC):
                                        offset=self.all_hit_parent_20.id.get_offset(),
                                        dtype=self.all_hit_parent_20.dtype)
 
-        self.all_hit_parent_3 = self.h5_file["hit_parent_3"]
-        self.hit_parent_3 = np.memmap(self.h5_path, mode="r",
-                                       shape=self.all_hit_parent_3.shape,
-                                       offset=self.all_hit_parent_3.id.get_offset(),
-                                       dtype=self.all_hit_parent_3.dtype)
+        # self.all_hit_parent_3 = self.h5_file["hit_parent_3"]
+        # self.hit_parent_3 = np.memmap(self.h5_path, mode="r",
+        #                                shape=self.all_hit_parent_3.shape,
+        #                                offset=self.all_hit_parent_3.id.get_offset(),
+        #                                dtype=self.all_hit_parent_3.dtype)
 
     def digitize(self, truepmts, truetimes, trueparents):
         """
@@ -206,23 +206,23 @@ class H5TrueDataset(H5CommonDataset, ABC):
         true_times_20   = self.time_20[start_20:stop_20]
         true_parents_20 = self.hit_parent_20[start_20:stop_20]
 
-        start_3 = self.event_hits_index_3[item]
-        stop_3 = self.event_hits_index_3[item + 1]
+        # start_3 = self.event_hits_index_3[item]
+        # stop_3 = self.event_hits_index_3[item + 1]
 
-        true_pmts_3    = self.hit_pmt_3[start_3:stop_3].astype(np.int16)
-        true_times_3   = self.time_3[start_3:stop_3]
-        true_parents_3 = self.hit_parent_3[start_3:stop_3]
+        # true_pmts_3    = self.hit_pmt_3[start_3:stop_3].astype(np.int16)
+        # true_times_3   = self.time_3[start_3:stop_3]
+        # true_parents_3 = self.hit_parent_3[start_3:stop_3]
 
         if self.digitize_hits:
             self.event_hit_pmts_20, self.event_hit_times_20, self.event_hit_charges_20 = self.digitize(true_pmts_20, true_times_20, true_parents_20)
-            self.event_hit_pmts_3, self.event_hit_times_3, self.event_hit_charges_3 = self.digitize(true_pmts_3, true_times_3, true_parents_3)
+            # self.event_hit_pmts_3, self.event_hit_times_3, self.event_hit_charges_3 = self.digitize(true_pmts_3, true_times_3, true_parents_3)
         else:
             self.event_hit_pmts_20 = true_pmts_20
             self.event_hit_times_20 = true_times_20
             self.event_hit_parents_20 = true_parents_20
 
-            self.event_hit_pmts_3 = true_pmts_3
-            self.event_hit_times_3 = true_times_3
-            self.event_hit_parents_3 = true_parents_3
+            # self.event_hit_pmts_3 = true_pmts_3
+            # self.event_hit_times_3 = true_times_3
+            # self.event_hit_parents_3 = true_parents_3
 
         return data_dict

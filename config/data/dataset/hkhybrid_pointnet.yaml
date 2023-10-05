@@ -1,6 +1,5 @@
 # @package _group_
 _target_: watchmal.dataset.pointnet.pointnet_dataset.PointNetDataset
-geometry_file: /lustre07/scratch/jgao/data/HKHybrid/HKHybrid.geo.npz
+geometry_file: /project/rpp-blairt2k/machine_learning/data/HKHybrid/numpy/HKHybrid_wo_mpmts.geo.npz
 use_orientations: False
-n_points_20: 4000
-n_points_3: 4000
+n_points_20: 8000
