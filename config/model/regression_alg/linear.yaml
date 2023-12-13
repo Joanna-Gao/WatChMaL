@@ -1,2 +1,2 @@
 _target_: watchmal.model.regression.LinearRegression
-num_outputs: 1
+num_outputs: 3

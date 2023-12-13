@@ -1,4 +1,4 @@
 # @package _group_
-split_path: /project/rpp-blairt2k/machine_learning/data/HKHybrid/numpy/e-_idxs_541ttv.npz
+split_path: /project/rpp-blairt2k/machine_learning/data/HKHybrid/numpy/e-_wo_mpmts_idxs_712ttv.npz
 dataset:
   h5file: /project/rpp-blairt2k/machine_learning/data/HKHybrid/numpy/e-mu-pi0_wo_mpmts.hdf5
